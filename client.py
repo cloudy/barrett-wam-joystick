@@ -21,8 +21,6 @@ while True:
 
     for i in range(joystick_count):
 
-        js_vals = np.zeros((21,))
-
         joystick = pygame.joystick.Joystick(i)
         joystick.init()
 
@@ -30,6 +28,8 @@ while True:
         axes = joystick.get_numaxes()
         buttons = joystick.get_numbuttons()
         hats = joystick.get_numhats()
+
+        js_vals = np.zeros((axes + buttons + hats,))
         
         for i in range( axes ):
             axis = joystick.get_axis( i )
