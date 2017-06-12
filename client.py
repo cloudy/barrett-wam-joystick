@@ -1,27 +1,29 @@
 import socket
-import pickle
+import cPickle as pickle
 import numpy as np
 import pygame
 from config import MAPPING, HOST, PORT
+import time
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
+def deadband(realval, band):
+    if realval < band:
+        return 0.0
+    return realval
 
-conn, addr = s.accept()
-
-
-done = None
-
-pygame.init()
-clock = pygame.time.Clock()
-pygame.joystick.init()
-
-sendagain = [1]
-
-while True:
-    joystick_count = pygame.joystick.get_count()
+def main():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
     
-    if sendagain[0] == 1:
+    done = None
+    
+    pygame.init()
+    clock = pygame.time.Clock()
+    pygame.joystick.init()
+    deadbandval = 0.1
+
+    while True:
+        joystick_count = pygame.joystick.get_count()
+        
         for event in pygame.event.get():
             pass
     
@@ -39,7 +41,7 @@ while True:
             
             for i in range( axes ):
                 axis = joystick.get_axis( i )
-                js_vals[i] = axis
+                js_vals[i] = deadband(axis, deadbandval)
                 
             for i in range( buttons ):
                 button = joystick.get_button( i )
@@ -52,10 +54,13 @@ while True:
         print js_vals
         js_packed = pickle.dumps(js_vals)
         s.send(js_packed)
-
-    sendagain = conn.recv(4096)
-    sendagain = pickle.loads(sendagain)
-
-    clock.tick(20)
     
-pygame.quit ()
+        time.sleep(0.1)
+        
+    pygame.quit ()
+
+
+
+
+if __name__ == "__main__":
+    main()
