@@ -26,9 +26,9 @@ def main():
         data = pickle.loads(data)
     
         if WAMCONNECTED:
-            s.send([0])
+            s.send(pickle.dumps([0]))
             live_wam_move(data[:MAPPING['AX4']], frequency=500)
-            s.send([1])
+            s.send(pickle.dumps([1]))
 
         #else:
             print 'AX0', data[MAPPING['AX0']]

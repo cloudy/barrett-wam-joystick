@@ -7,6 +7,9 @@ from config import MAPPING, HOST, PORT
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 
+conn, addr = s.accept()
+
+
 done = None
 
 pygame.init()
