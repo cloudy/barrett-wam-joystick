@@ -1,7 +1,7 @@
 import socket
 import pickle
 import numpy
-from config import MAPPING, HOST, PORT, WAMCONNECTED, HOMEPOS
+from config import MAPPING, HOST, PORT, WAMCONNECTED, HOMEPOS, MAXVAL
 
 if WAMCONNECTED: 
     from WAMPy import *
@@ -11,6 +11,8 @@ def main():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((HOST, PORT))
     s.listen(1)
+    nody = rospy.init_node("motion_control")
+
     
     conn, addr = s.accept()
     
@@ -24,9 +26,11 @@ def main():
         data = pickle.loads(data)
     
         if WAMCONNECTED:
+            s.send([0])
             live_wam_move(data[:MAPPING['AX4']], frequency=500)
-    
-        else:
+            s.send([1])
+
+        #else:
             print 'AX0', data[MAPPING['AX0']]
             print 'AX1', data[MAPPING['AX1']]
             print 'AX2', data[MAPPING['AX2']]

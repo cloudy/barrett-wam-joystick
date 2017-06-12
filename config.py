@@ -10,3 +10,5 @@ WAMCONNECTED = True
 
 
 HOMEPOS = [ 0, -2, 0, 3.13]
+
+MAXVAL = 32768
