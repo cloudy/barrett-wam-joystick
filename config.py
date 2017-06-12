@@ -5,3 +5,5 @@ MAPPING = {'AX0':0, 'AX1':1, 'AX2':2, 'AX3':3, 'AX4':4, 'AX5':5, 'BT0':6, 'BT1':
 
 HOST = 'localhost' #'192.168.1.2'
 PORT = 50007
+
+WAMCONNECTED = False
