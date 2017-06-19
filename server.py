@@ -26,6 +26,7 @@ def main():
         data = pickle.loads(data)
     
         if WAMCONNECTED:
+	    # Send an array of positions from AX0 to AX3
             live_wam_move(data[:MAPPING['AX4']], frequency=500)
     
         else:
